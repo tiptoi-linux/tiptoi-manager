@@ -1,0 +1,11 @@
+.claude/
+tiptoi-manager.sh
+tiptoi-gnome-app-konzept.md
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.venv/

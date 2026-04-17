@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "tiptoi-gtk"
+version = "0.1.0"
+description = "Nativer GNOME-Manager für TipToi-Stifte"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.scripts]
+tiptoi-gtk = "tiptoi_gtk.main:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["tiptoi_gtk*"]
+
+[tool.setuptools.package-data]
+tiptoi_gtk = ["ui/*.ui", "data/*.desktop", "data/icons/*.svg"]

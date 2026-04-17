@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=TipToi Manager
+Comment=TipToi-Stifte verwalten
+Exec=tiptoi-gtk
+Icon=tiptoi-gtk
+Terminal=false
+Type=Application
+Categories=Utility;Education;
+Keywords=tiptoi;ravensburger;kinder;
