@@ -12,8 +12,9 @@ mindestens eines dieser Kriterien erfüllt ist:
     • Eine Datei mit der Endung .key existiert (z. B. .tiptoi.key)
     • Ein Unterordner namens "system" oder "gmefile" vorhanden ist
 
-Callbacks laufen bereits im GTK-Hauptthread (GLib.idle_add), können also
-direkt für UI-Updates verwendet werden.
+Callbacks erhalten (label, path) – label ist der Anzeigename des Laufwerks
+(z. B. "TIPTOI"), path der Mount-Pfad (z. B. "/run/media/user/TIPTOI").
+Beide Callbacks laufen im GTK-Hauptthread (via GLib.idle_add).
 """
 
 from typing import Callable, Optional
@@ -47,18 +48,23 @@ class PenMonitor:
     """
     Überwacht USB-Mounts und erkennt TipToi-Stifte über den GIO VolumeMonitor.
 
+    Die Callbacks erhalten (label: str, path: str), wobei label der Anzeigename
+    des Laufwerks ist (z. B. "TIPTOI") und path der Mount-Pfad.
+
     Beispiel:
         monitor = PenMonitor(
-            on_connected=lambda path: print(f"Stift verbunden: {path}"),
-            on_disconnected=lambda path: print("Stift getrennt"),
+            on_connected=lambda label, path: print(f"Stift: {label} @ {path}"),
+            on_disconnected=lambda label, path: print("Stift getrennt"),
         )
         existing = monitor.scan_existing_mounts()
+        if existing:
+            label, path = existing
     """
 
     def __init__(
         self,
-        on_connected: Callable[[str], None],
-        on_disconnected: Callable[[str], None],
+        on_connected: Callable[[str, str], None],
+        on_disconnected: Callable[[str, str], None],
     ) -> None:
         self._on_connected = on_connected
         self._on_disconnected = on_disconnected
@@ -70,20 +76,21 @@ class PenMonitor:
 
     # ── Öffentliche API ────────────────────────────────────────────────────────
 
-    def scan_existing_mounts(self) -> Optional[str]:
+    def scan_existing_mounts(self) -> Optional[tuple[str, str]]:
         """
         Durchsucht beim Start alle bereits gemounteten Volumes nach einem Stift.
 
         Returns:
-            Mount-Pfad des gefundenen Stifts oder None.
+            (label, path) des gefundenen Stifts oder None.
         """
         for mount in self._volume_monitor.get_mounts():
             root = mount.get_root()
             if root and _is_tiptoi_root(root):
                 path = root.get_path()
                 if path:
+                    label = mount.get_name() or path
                     self._current_path = path
-                    return path
+                    return label, path
         return None
 
     def set_manual_path(self, path: str) -> None:
@@ -92,7 +99,7 @@ class PenMonitor:
         Löst den on_connected-Callback aus.
         """
         self._current_path = path
-        GLib.idle_add(self._on_connected, path)
+        GLib.idle_add(self._on_connected, path, path)
 
     @property
     def current_path(self) -> Optional[str]:
@@ -113,8 +120,9 @@ class PenMonitor:
         if _is_tiptoi_root(root):
             path = root.get_path()
             if path:
+                label = mount.get_name() or path
                 self._current_path = path
-                GLib.idle_add(self._on_connected, path)
+                GLib.idle_add(self._on_connected, label, path)
 
     def _on_mount_removed(self, _monitor: Gio.VolumeMonitor, mount: Gio.Mount) -> None:
         root = mount.get_root()
@@ -122,5 +130,6 @@ class PenMonitor:
             return
         path = root.get_path()
         if path and path == self._current_path:
+            label = mount.get_name() or path
             self._current_path = None
-            GLib.idle_add(self._on_disconnected, path)
+            GLib.idle_add(self._on_disconnected, label, path)

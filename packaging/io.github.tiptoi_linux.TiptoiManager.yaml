@@ -1,0 +1,70 @@
+id: io.github.tiptoi_linux.TiptoiManager
+runtime: org.gnome.Platform
+runtime-version: '48'
+sdk: org.gnome.Sdk
+command: tiptoi-gtk
+
+finish-args:
+  # Display
+  - --socket=wayland
+  - --socket=fallback-x11
+  - --share=ipc
+
+  # Network access for downloading the product catalogue and GME files
+  - --share=network
+
+  # USB pen detection via GIO VolumeMonitor / GVfs
+  - --talk-name=org.gtk.vfs.*
+  - --talk-name=org.freedesktop.UDisks2
+
+  # Read/write access to mounted USB pens
+  - --filesystem=/run/media   # Fedora / Arch (udisks2 default)
+  - --filesystem=/media       # Debian / Ubuntu (udev default)
+
+  # Download folder – user can configure any path under $HOME
+  - --filesystem=home
+
+  # Open download folder in Files app
+  - --talk-name=org.freedesktop.FileManager1
+
+cleanup:
+  - /include
+  - /lib/pkgconfig
+  - '*.la'
+  - '*.a'
+
+modules:
+  - name: tiptoi-manager
+    buildsystem: simple
+    build-commands:
+      # Install the Python package
+      - pip3 install --prefix=/app --no-deps --no-build-isolation .
+
+      # Desktop entry
+      - install -Dm644 data/io.github.tiptoi_linux.TiptoiManager.desktop
+          /app/share/applications/io.github.tiptoi_linux.TiptoiManager.desktop
+
+      # AppStream metadata
+      - install -Dm644 data/io.github.tiptoi_linux.TiptoiManager.metainfo.xml
+          /app/share/metainfo/io.github.tiptoi_linux.TiptoiManager.metainfo.xml
+
+      # Icons (all standard sizes)
+      - install -Dm644 data/icons/hicolor/512x512/apps/io.github.tiptoi_linux.TiptoiManager.png
+          /app/share/icons/hicolor/512x512/apps/io.github.tiptoi_linux.TiptoiManager.png
+      - install -Dm644 data/icons/hicolor/256x256/apps/io.github.tiptoi_linux.TiptoiManager.png
+          /app/share/icons/hicolor/256x256/apps/io.github.tiptoi_linux.TiptoiManager.png
+      - install -Dm644 data/icons/hicolor/128x128/apps/io.github.tiptoi_linux.TiptoiManager.png
+          /app/share/icons/hicolor/128x128/apps/io.github.tiptoi_linux.TiptoiManager.png
+      - install -Dm644 data/icons/hicolor/64x64/apps/io.github.tiptoi_linux.TiptoiManager.png
+          /app/share/icons/hicolor/64x64/apps/io.github.tiptoi_linux.TiptoiManager.png
+      - install -Dm644 data/icons/hicolor/48x48/apps/io.github.tiptoi_linux.TiptoiManager.png
+          /app/share/icons/hicolor/48x48/apps/io.github.tiptoi_linux.TiptoiManager.png
+
+    sources:
+      # For local testing use type: dir. For the Flathub PR, replace with:
+      # - type: git
+      #   url: https://github.com/tiptoi-linux/tiptoi-manager.git
+      #   tag: v1.0.0
+      #   commit: <SHA of the tag>
+      - type: dir
+        path: ..

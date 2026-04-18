@@ -5,6 +5,8 @@
 **Stack:** Python 3.11 · GTK 4 · libadwaita  
 **Plattform:** Linux (primär Fedora / GNOME)
 
+![Screenshot](data/screenshots/search.png)
+
 ---
 
 ## Motivation
@@ -23,25 +25,40 @@ nahtlos in den Desktop integriert und ohne Terminal-Kenntnisse bedienbar ist.
 | Suche nach Name oder Artikelnummer | ✅ |
 | Filter nach Erscheinungsjahr | ✅ |
 | GME-Datei herunterladen (mit Fortschrittsbalken) | ✅ |
+| Mehrere Downloads parallel (je mit Abbrechen-Button) | ✅ |
+| Dateigröße vor dem Download anzeigen | ✅ |
 | Direkt auf Stift herunterladen (1-Klick) | ✅ |
 | TipToi-Stift automatisch erkennen (GIO VolumeMonitor) | ✅ |
+| Stift-Label anzeigen (Name + Pfad in Klammern) | ✅ |
 | Installierte Produkte auf dem Stift anzeigen | ✅ |
 | Produkt vom Stift löschen (mit Bestätigungsdialog) | ✅ |
 | Datei aus Download-Ordner auf Stift kopieren | ✅ |
+| Status in Suchergebnissen (lokal / auf Stift vorhanden) | ✅ |
+| Duplikat-Warnung im Download-Ordner | ✅ |
 | Einstellungen (Download-Ordner, Cache-Dauer, CSV-URL) | ✅ |
+| Internationalisierung (gettext, Englisch verfügbar) | ✅ |
 | About-Dialog | ✅ |
-
----
-
-## Screenshots
-
-> *(folgen)*
 
 ---
 
 ## Installation
 
-### Systemabhängigkeiten
+### Flatpak (empfohlen)
+
+> Flathub-Einreichung in Vorbereitung.
+
+Zum lokalen Testen per `flatpak-builder`:
+
+```bash
+git clone https://github.com/tiptoi-linux/tiptoi-manager
+cd tiptoi-manager
+flatpak install flathub org.gnome.Platform//48 org.gnome.Sdk//48
+flatpak-builder --user --install --force-clean build-dir \
+  packaging/io.github.tiptoi_linux.TiptoiManager.yaml
+flatpak run io.github.tiptoi_linux.TiptoiManager
+```
+
+### Entwicklungsmodus (ohne Installation)
 
 ```bash
 # Fedora
@@ -49,17 +66,13 @@ sudo dnf install python3-gobject gtk4 libadwaita
 
 # Ubuntu / Debian
 sudo apt install python3-gi gir1.2-gtk-4.0 gir1.2-adw-1
-```
 
-### App starten (Entwicklungsmodus)
-
-```bash
-git clone https://github.com/example/tiptoi-manager
+git clone https://github.com/tiptoi-linux/tiptoi-manager
 cd tiptoi-manager
 python -m tiptoi_gtk.main
 ```
 
-### Installation per pip
+### Per pip
 
 ```bash
 pip install -e . --user
@@ -74,59 +87,58 @@ tiptoi-gtk
 tiptoi-manager/
 ├── tiptoi_gtk/
 │   ├── main.py                  # Einstiegspunkt
-│   ├── application.py           # Adw.Application-Subklasse
-│   ├── window.py                # Hauptfenster (alle 3 Views)
+│   ├── application.py           # Adw.Application (App-ID, activate)
+│   ├── window.py                # Hauptfenster: Rahmen + gemeinsame Hilfsmethoden
+│   ├── views/
+│   │   ├── search_view.py       # Tab „Suchen": Suchfeld, Jahresfilter, Produktliste
+│   │   ├── pen_view.py          # Tab „Stift": Erkennung, Infos, Dateiverwaltung
+│   │   ├── downloads_view.py    # Tab „Downloads": lokale GME-Dateien
+│   │   └── download_manager.py  # Aktive Downloads, Fortschritt, Abbrechen
+│   ├── dialogs/
+│   │   └── preferences.py       # Einstellungsfenster
 │   ├── backend/
 │   │   ├── catalog.py           # CSV laden, cachen, suchen, Jahresfilter
-│   │   ├── downloader.py        # HTTP-Download (threaded, Fortschritt)
+│   │   ├── downloader.py        # HTTP-Download (threaded, Abbruch, Größe)
 │   │   ├── gme.py               # GME-Dateioperationen (kopieren, löschen)
 │   │   ├── pen.py               # Stifterkennung via GIO VolumeMonitor
-│   │   └── settings_manager.py  # JSON-Einstellungen (~/.config/tiptoi-gtk/)
-│   └── model/
-│       └── product.py           # Produkt-Datenklasse
+│   │   └── settings_manager.py  # JSON-Einstellungen ($XDG_CONFIG_HOME/tiptoi-gtk/)
+│   ├── model/
+│   │   └── product.py           # Produkt-Datenklasse
+│   └── locale/
+│       └── en/LC_MESSAGES/      # Englische Übersetzung (.po + .mo)
+├── data/
+│   ├── io.github.tiptoi_linux.TiptoiManager.desktop
+│   ├── io.github.tiptoi_linux.TiptoiManager.metainfo.xml
+│   ├── icons/hicolor/           # App-Icon in 48 · 64 · 128 · 256 · 512 px
+│   └── screenshots/
+├── packaging/
+│   └── io.github.tiptoi_linux.TiptoiManager.yaml  # Flatpak-Manifest
 ├── tests/
-│   ├── test_catalog.py
-│   └── test_pen.py
 ├── pyproject.toml
 └── README.md
 ```
 
 ---
 
-## UI-Übersicht
-
-```
-┌──────────────────────────────────────────────────────────┐
-│  [Suchen]        [Stift]        [Downloads]    [≡ Menü]  │  ← AdwHeaderBar
-├──────────────────────────────────────────────────────────┤
-│  ▶  Stift verbunden: /run/media/user/TIPTOI  [Anzeigen]  │  ← AdwBanner
-├──────────────────────────────────────────────────────────┤
-│                                                          │
-│  View „Suchen":                                          │
-│  ┌─ Suchfeld ──────────────────────────────────────────┐ │
-│  │  🔍  Produktname oder Artikelnummer…                │ │
-│  └─────────────────────────────────────────────────────┘ │
-│  Jahr: [Alle Jahre ▾]                                    │
-│  ████████████░░░░  63 %  ← Fortschrittsbalken            │
-│  274 Produkte                                            │
-│  ┌─────────────────────────────────────────────────────┐ │
-│  │  Weltatlas · 2022               Nr. 32911  [🖊] [↓] │ │
-│  │  Erste Zahlen · 2021            Nr. 41801  [🖊] [↓] │ │
-│  └─────────────────────────────────────────────────────┘ │
-│                                                          │
-│  View „Stift":  Pfad · Speicher · installierte GME-Files │
-│  View „Downloads":  lokale Dateien · auf Stift kopieren  │
-│                                                          │
-└──────────────────────────────────────────────────────────┘
-```
-
-Navigation ausschließlich über die **Header-Leiste** (kein unteres Tab-Bar).
-
----
-
 ## Architektur
 
-### Asynchrones Modell
+### Views als Mixin-Klassen
+
+Die drei Tabs und der Einstellungsdialog sind in separate Dateien ausgelagert.
+`TiptoiWindow` erbt von allen Mixins — der geteilte Zustand (`_pen_path`,
+`_products` usw.) liegt auf der Window-Instanz und ist ohne Übergabe erreichbar.
+
+```
+TiptoiWindow
+  ├── SearchViewMixin      (views/search_view.py)
+  ├── PenViewMixin         (views/pen_view.py)
+  ├── DownloadsViewMixin   (views/downloads_view.py)
+  ├── DownloadManagerMixin (views/download_manager.py)
+  ├── PreferencesDialogMixin (dialogs/preferences.py)
+  └── Adw.ApplicationWindow
+```
+
+### Asynchrones Download-Modell
 
 Alle Netzwerk- und I/O-Operationen laufen in Daemon-Threads. UI-Updates werden
 ausschließlich über `GLib.idle_add()` im GTK-Hauptthread durchgeführt:
@@ -135,21 +147,22 @@ ausschließlich über `GLib.idle_add()` im GTK-Hauptthread durchgeführt:
 [GTK-Hauptthread]              [Hintergrundthread]
         │                               │
         │── download_gme() ───────────▶ │  urllib.urlopen(...)
-        │                               │  chunk loop
-        │◀── GLib.idle_add() ──────────│  progress_cb(0.42)
-        │   progress_bar.set(0.42)      │
+        │   returns Event               │  size_cb(12_450_000)  → size label
+        │◀── GLib.idle_add() ──────────│  progress_cb(0.42)    → progress bar
         │                               │
-        │◀── GLib.idle_add() ──────────│  done_cb(True, path)
-        │   show_toast("Fertig")        │
+        │   cancel_event.set() ───────▶ │  cancel_event.is_set() → bricht ab
+        │◀── GLib.idle_add() ──────────│  done_cb(False, CANCEL_SENTINEL)
 ```
 
 ### Datenspeicherung
 
+Alle Pfade folgen den XDG-Standards und funktionieren korrekt im Flatpak-Sandbox:
+
 | Pfad | Inhalt |
 |---|---|
-| `~/.cache/tiptoi-gtk/produkte.csv` | Ravensburger Produktliste (7-Tage-Cache) |
-| `~/.config/tiptoi-gtk/settings.json` | Einstellungen (Download-Ordner, CSV-URL, …) |
-| `~/tiptoi-downloads/` | Heruntergeladene GME-Dateien (Standard) |
+| `$XDG_CACHE_HOME/tiptoi-gtk/produkte.csv` | Ravensburger Produktliste |
+| `$XDG_CONFIG_HOME/tiptoi-gtk/settings.json` | Einstellungen |
+| `$XDG_DOWNLOAD_DIR/tiptoi/` | Heruntergeladene GME-Dateien (Standard) |
 
 ### Stifterkennung
 
@@ -159,25 +172,21 @@ ausschließlich über `GLib.idle_add()` im GTK-Hauptthread durchgeführt:
 Ein Mount gilt als TipToi-Stift, wenn im Root-Verzeichnis `.gme`-, `.key`-Dateien
 oder ein `system/`-Ordner vorhanden sind.
 
----
+### Internationalisierung
 
-## Roadmap
+Die App nutzt Python `gettext`. Deutsche Strings sind die Quellsprache.
+Eine englische Übersetzung liegt kompiliert unter
+`tiptoi_gtk/locale/en/LC_MESSAGES/tiptoi-gtk.mo` bereit.
 
-### Abgeschlossen ✅
-- Produktliste laden, cachen, durchsuchen (Name & Artikelnummer)
-- Jahresfilter (basiert auf `_version`-Spalte der CSV)
-- GME-Download mit Fortschrittsbalken
-- 1-Klick „Herunterladen + auf Stift kopieren"
-- Stifterkennung via GIO VolumeMonitor
-- Produkte auf dem Stift anzeigen & löschen (mit Bestätigungsdialog)
-- Einstellungsfenster (Download-Ordner, Cache-Gültigkeit, CSV-URL)
-- About-Dialog
+Neue Übersetzung hinzufügen:
 
-### Geplant
-- `.desktop`-Datei & App-Icon (SVG)
-- udev-Regel für automatischen Start beim Einstecken
-- Flatpak-Manifest & Flathub-Einreichung
-- Lokalisierung (gettext / i18n)
+```bash
+mkdir -p tiptoi_gtk/locale/fr/LC_MESSAGES
+cp tiptoi_gtk/locale/en/LC_MESSAGES/tiptoi-gtk.po tiptoi_gtk/locale/fr/LC_MESSAGES/
+# ... übersetzen ...
+msgfmt -o tiptoi_gtk/locale/fr/LC_MESSAGES/tiptoi-gtk.mo \
+           tiptoi_gtk/locale/fr/LC_MESSAGES/tiptoi-gtk.po
+```
 
 ---
 

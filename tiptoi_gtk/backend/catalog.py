@@ -22,6 +22,7 @@ CSV-Format (aktuell, kommagetrennt):
 """
 
 import csv
+import os
 import urllib.request
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -30,7 +31,8 @@ from typing import Callable, Optional
 from tiptoi_gtk.model.product import Product
 from tiptoi_gtk.backend import settings_manager as settings
 
-CACHE_PATH = Path.home() / ".cache" / "tiptoi-gtk" / "produkte.csv"
+_CACHE_HOME = Path(os.environ.get("XDG_CACHE_HOME") or (Path.home() / ".cache"))
+CACHE_PATH = _CACHE_HOME / "tiptoi-gtk" / "produkte.csv"
 CSV_URL = "https://cdn.ravensburger.de/db/tiptoi.csv"  # Fallback / Anzeige-Default
 MAX_AGE_DAYS = 7
 

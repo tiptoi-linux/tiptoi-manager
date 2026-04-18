@@ -1,17 +1,24 @@
 """
 Einfache Einstellungsverwaltung via JSON-Datei.
 
-Einstellungen werden unter ~/.config/tiptoi-gtk/settings.json gespeichert.
+Einstellungen werden unter $XDG_CONFIG_HOME/tiptoi-gtk/settings.json gespeichert
+(in Flatpak: ~/.var/app/io.github.tiptoi_linux.TiptoiManager/config/tiptoi-gtk/).
 """
 
 import json
+import os
 from pathlib import Path
 from typing import Any
 
-CONFIG_PATH = Path.home() / ".config" / "tiptoi-gtk" / "settings.json"
+_CONFIG_HOME = Path(os.environ.get("XDG_CONFIG_HOME") or (Path.home() / ".config"))
+CONFIG_PATH = _CONFIG_HOME / "tiptoi-gtk" / "settings.json"
+
+_DOWNLOAD_DEFAULT = str(
+    Path(os.environ.get("XDG_DOWNLOAD_DIR") or (Path.home() / "Downloads")) / "tiptoi"
+)
 
 _DEFAULTS: dict[str, Any] = {
-    "download_dir": str(Path.home() / "tiptoi-downloads"),
+    "download_dir": _DOWNLOAD_DEFAULT,
     "csv_max_age_days": 7,
     "csv_url": "https://cdn.ravensburger.de/db/tiptoi.csv",
 }

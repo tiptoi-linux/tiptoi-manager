@@ -1,0 +1,16 @@
+[Desktop Entry]
+Name=TipToi Manager
+Name[de]=TipToi Manager
+GenericName=Pen Manager
+GenericName[de]=Stiftverwaltung
+Comment=Manage TipToi pens and download products
+Comment[de]=TipToi-Stifte verwalten und Produkte herunterladen
+Exec=tiptoi-gtk
+Icon=io.github.tiptoi_linux.TiptoiManager
+Terminal=false
+Type=Application
+Categories=Utility;Education;
+Keywords=tiptoi;ravensburger;children;pen;learning;
+Keywords[de]=tiptoi;ravensburger;kinder;stift;lernen;
+StartupWMClass=io.github.tiptoi_linux.TiptoiManager
+X-GNOME-UsesNotifications=false

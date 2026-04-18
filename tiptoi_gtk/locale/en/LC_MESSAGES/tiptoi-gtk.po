@@ -1,0 +1,235 @@
+# English translation for TipToi Manager
+# Source language: German
+# msgfmt -o tiptoi-gtk.mo tiptoi-gtk.po
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: en\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+# ── Navigation ──────────────────────────────────────────────────────────────
+msgid "Suchen"
+msgstr "Search"
+
+msgid "Stift"
+msgstr "Pen"
+
+msgid "Downloads"
+msgstr "Downloads"
+
+msgid "Menü"
+msgstr "Menu"
+
+msgid "Einstellungen"
+msgstr "Settings"
+
+msgid "Über TipToi Manager"
+msgstr "About TipToi Manager"
+
+# ── Banner ───────────────────────────────────────────────────────────────────
+msgid "Stift verbunden"
+msgstr "Pen connected"
+
+msgid "Anzeigen"
+msgstr "Show"
+
+msgid "Stift verbunden: {label} ({path})"
+msgstr "Pen connected: {label} ({path})"
+
+msgid "Stift getrennt."
+msgstr "Pen disconnected."
+
+# ── Suche ────────────────────────────────────────────────────────────────────
+msgid "Produktname oder Artikelnummer…"
+msgstr "Product name or article number…"
+
+msgid "Jahr:"
+msgstr "Year:"
+
+msgid "Nach Erscheinungsjahr filtern"
+msgstr "Filter by release year"
+
+msgid "Alle Jahre"
+msgstr "All years"
+
+msgid "{n} Produkte"
+msgstr "{n} products"
+
+msgid "Keine Produkte gefunden."
+msgstr "No products found."
+
+msgid "Produktliste wird geladen…"
+msgstr "Loading product list…"
+
+msgid "Nr. {nr}{year}"
+msgstr "No. {nr}{year}"
+
+msgid "Bereits auf dem Stift"
+msgstr "Already on pen"
+
+msgid "Bereits heruntergeladen"
+msgstr "Already downloaded"
+
+# ── Download-Panel ───────────────────────────────────────────────────────────
+msgid "Aktive Downloads"
+msgstr "Active downloads"
+
+msgid "Download abbrechen"
+msgstr "Cancel download"
+
+msgid "Dieser Download läuft bereits."
+msgstr "This download is already running."
+
+msgid "Herunterladen und auf Stift kopieren"
+msgstr "Download and copy to pen"
+
+msgid "Herunterladen"
+msgstr "Download"
+
+msgid "Kein Download"
+msgstr "No download available"
+
+msgid "{name} heruntergeladen."
+msgstr "{name} downloaded."
+
+msgid "Download fehlgeschlagen: {error}"
+msgstr "Download failed: {error}"
+
+msgid "Fehler beim Kopieren: {error}"
+msgstr "Error copying: {error}"
+
+msgid "Auf Stift kopiert."
+msgstr "Copied to pen."
+
+# ── Stift-View ───────────────────────────────────────────────────────────────
+msgid "Kein Stift verbunden"
+msgstr "No pen connected"
+
+msgid "Schließe deinen TipToi-Stift über USB an."
+msgstr "Connect your TipToi pen via USB."
+
+msgid "Stift-Informationen"
+msgstr "Pen information"
+
+msgid "Pfad"
+msgstr "Mount path"
+
+msgid "Speicher"
+msgstr "Storage"
+
+msgid "{free} frei von {total}"
+msgstr "{free} free of {total}"
+
+msgid "Installierte Produkte"
+msgstr "Installed products"
+
+msgid "Keine Produkte installiert"
+msgstr "No products installed"
+
+msgid "Vom Stift löschen"
+msgstr "Delete from pen"
+
+msgid "Datei löschen?"
+msgstr "Delete file?"
+
+
+msgid "Abbrechen"
+msgstr "Cancel"
+
+msgid "Löschen"
+msgstr "Delete"
+
+msgid "Fehler beim Löschen: {error}"
+msgstr "Error deleting: {error}"
+
+msgid "{name} gelöscht."
+msgstr "{name} deleted."
+
+# ── Downloads-View ───────────────────────────────────────────────────────────
+msgid "Ordner öffnen"
+msgstr "Open folder"
+
+msgid "Download-Ordner im Dateimanager öffnen"
+msgstr "Open download folder in file manager"
+
+msgid "Keine Downloads"
+msgstr "No downloads"
+
+msgid "Heruntergeladene Dateien erscheinen hier."
+msgstr "Downloaded files appear here."
+
+msgid "Auf Stift kopieren"
+msgstr "Copy to pen"
+
+msgid "Mehrere Dateien für diese Artikelnummer vorhanden"
+msgstr "Multiple files found for this article number"
+
+msgid "Kein Stift verbunden."
+msgstr "No pen connected."
+
+msgid "Fehler: {error}"
+msgstr "Error: {error}"
+
+msgid "{name} auf Stift kopiert."
+msgstr "{name} copied to pen."
+
+# ── Einstellungen ────────────────────────────────────────────────────────────
+msgid "Allgemein"
+msgstr "General"
+
+msgid "Speicherort"
+msgstr "Storage location"
+
+msgid "Download-Ordner"
+msgstr "Download folder"
+
+msgid "Ordner wählen"
+msgstr "Choose folder"
+
+msgid "Download-Ordner wählen"
+msgstr "Choose download folder"
+
+msgid "Produktliste"
+msgstr "Product list"
+
+msgid "Cache-Gültigkeit"
+msgstr "Cache validity"
+
+msgid "Produktliste nach dieser Anzahl Tage neu laden"
+msgstr "Reload product list after this many days"
+
+msgid "Download-URL"
+msgstr "Download URL"
+
+msgid "Auf Standard zurücksetzen"
+msgstr "Reset to default"
+
+msgid "Aktueller Cache"
+msgstr "Current cache"
+
+msgid "{days:.0f} Tage alt"
+msgstr "{days:.0f} days old"
+
+msgid "nicht vorhanden"
+msgstr "not available"
+
+msgid "Jetzt aktualisieren"
+msgstr "Refresh now"
+
+msgid "Download-Ordner: {path}"
+msgstr "Download folder: {path}"
+
+msgid "Produktliste wird aktualisiert…"
+msgstr "Refreshing product list…"
+
+msgid "URL gespeichert. Beim nächsten Aktualisieren wird sie verwendet."
+msgstr "URL saved. It will be used on the next refresh."
+
+# ── Katalog ──────────────────────────────────────────────────────────────────
+msgid "Katalog-Fehler: {error}"
+msgstr "Catalog error: {error}"
+
+# ── About ────────────────────────────────────────────────────────────────────
+msgid "Nativer GNOME-Manager für TipToi-Stifte unter Linux."
+msgstr "Native GNOME manager for TipToi pens on Linux."

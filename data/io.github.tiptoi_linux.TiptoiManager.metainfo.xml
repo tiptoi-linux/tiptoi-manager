@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.tiptoi_linux.TiptoiManager</id>
+
+  <name>TipToi Manager</name>
+  <name xml:lang="de">TipToi Manager</name>
+
+  <summary>Manage TipToi pens and download products</summary>
+  <summary xml:lang="de">TipToi-Stifte verwalten und Produkte herunterladen</summary>
+
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-or-later</project_license>
+
+  <description>
+    <p>
+      TipToi Manager is a native GNOME application for managing Ravensburger TipToi
+      pens on Linux. The official Ravensburger software is only available for Windows
+      and macOS — TipToi Manager closes this gap with a clean GTK 4 / libadwaita interface.
+    </p>
+    <p xml:lang="de">
+      TipToi Manager ist eine native GNOME-Anwendung zur Verwaltung von Ravensburger
+      TipToi-Stiften unter Linux. Die offizielle Ravensburger-Software ist nur für
+      Windows und macOS verfügbar – TipToi Manager schließt diese Lücke mit einer
+      nativen GTK-4-/libadwaita-Oberfläche.
+    </p>
+    <p>Features:</p>
+    <ul>
+      <li>Browse and search the full Ravensburger product catalogue</li>
+      <li>Filter products by release year</li>
+      <li>Download GME files with progress indicator and cancel button</li>
+      <li>Multiple parallel downloads</li>
+      <li>Automatic TipToi pen detection via USB (GIO VolumeMonitor)</li>
+      <li>Download directly to the pen in one click</li>
+      <li>View installed products and free storage on the pen</li>
+      <li>Delete products from the pen with confirmation dialog</li>
+      <li>Copy locally downloaded files to the pen</li>
+      <li>Duplicate file detection in the download folder</li>
+      <li>Configurable download folder, cache duration and catalogue URL</li>
+    </ul>
+    <p xml:lang="de">Funktionen:</p>
+    <ul xml:lang="de">
+      <li>Ravensburger-Produktkatalog durchsuchen und filtern</li>
+      <li>Nach Erscheinungsjahr filtern</li>
+      <li>GME-Dateien mit Fortschrittsanzeige und Abbrechen-Schaltfläche herunterladen</li>
+      <li>Mehrere parallele Downloads</li>
+      <li>Automatische TipToi-Stifterkennung per USB (GIO VolumeMonitor)</li>
+      <li>Mit einem Klick direkt auf den Stift herunterladen</li>
+      <li>Installierte Produkte und freien Speicherplatz auf dem Stift anzeigen</li>
+      <li>Produkte mit Bestätigungsdialog vom Stift löschen</li>
+      <li>Lokal gespeicherte Dateien auf den Stift kopieren</li>
+      <li>Duplikaterkennung im Download-Ordner</li>
+      <li>Konfigurierbarer Download-Ordner, Cache-Dauer und Katalog-URL</li>
+    </ul>
+  </description>
+
+  <launchable type="desktop-id">io.github.tiptoi_linux.TiptoiManager.desktop</launchable>
+
+  <screenshots>
+    <screenshot type="default">
+      <caption>Browse and search the Ravensburger product catalogue</caption>
+      <caption xml:lang="de">Ravensburger-Produktkatalog durchsuchen</caption>
+      <image type="source" width="700" height="770">https://raw.githubusercontent.com/tiptoi-linux/tiptoi-manager/main/data/screenshots/search.png</image>
+    </screenshot>
+  </screenshots>
+
+  <url type="homepage">https://github.com/tiptoi-linux/tiptoi-manager</url>
+  <url type="bugtracker">https://github.com/tiptoi-linux/tiptoi-manager/issues</url>
+
+  <developer id="io.github.tiptoi_linux">
+    <name>Manuel Simon</name>
+  </developer>
+
+  <releases>
+    <release version="1.0.0" date="2026-04-18">
+      <description>
+        <p>Initial release.</p>
+        <p xml:lang="de">Erste Veröffentlichung.</p>
+      </description>
+    </release>
+  </releases>
+
+  <content_rating type="oars-1.1">
+    <!-- This app has no objectionable content -->
+  </content_rating>
+
+  <categories>
+    <category>Utility</category>
+    <category>Education</category>
+  </categories>
+
+  <keywords>
+    <keyword>tiptoi</keyword>
+    <keyword>ravensburger</keyword>
+    <keyword>children</keyword>
+    <keyword>learning</keyword>
+    <keyword>pen</keyword>
+    <keyword xml:lang="de">kinder</keyword>
+    <keyword xml:lang="de">stift</keyword>
+    <keyword xml:lang="de">lernen</keyword>
+  </keywords>
+
+  <requires>
+    <display_length compare="ge">360</display_length>
+  </requires>
+
+  <recommends>
+    <control>pointing</control>
+    <control>keyboard</control>
+  </recommends>
+</component>

@@ -1,8 +1,8 @@
 """
 Adw.Application-Subklasse für tiptoi-gtk.
 
-Registriert die Anwendung mit der Application-ID 'de.gnome.TiptoiGtk' und
-instanziiert beim ersten Activate-Signal das Hauptfenster.
+Registriert die Anwendung mit der Application-ID 'io.github.tiptoi_linux.TiptoiManager'
+und instanziiert beim ersten Activate-Signal das Hauptfenster.
 """
 
 import gi
@@ -14,7 +14,7 @@ from gi.repository import Adw, Gio
 
 from tiptoi_gtk.window import TiptoiWindow
 
-APP_ID = "de.gnome.TiptoiGtk"
+APP_ID = "io.github.tiptoi_linux.TiptoiManager"
 
 
 class TiptoiApplication(Adw.Application):

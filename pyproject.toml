@@ -4,10 +4,17 @@ build-backend = "setuptools.backends.legacy:build"
 
 [project]
 name = "tiptoi-gtk"
-version = "0.1.0"
-description = "Nativer GNOME-Manager für TipToi-Stifte"
+version = "1.0.0"
+description = "Native GNOME manager for TipToi pens"
+readme = "README.md"
+license = { text = "GPL-3.0-or-later" }
+authors = [{ name = "Manuel Simon" }]
 requires-python = ">=3.11"
 dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/tiptoi-linux/tiptoi-manager"
+"Bug Tracker" = "https://github.com/tiptoi-linux/tiptoi-manager/issues"
 
 [project.scripts]
 tiptoi-gtk = "tiptoi_gtk.main:main"
@@ -17,4 +24,10 @@ where = ["."]
 include = ["tiptoi_gtk*"]
 
 [tool.setuptools.package-data]
-tiptoi_gtk = ["ui/*.ui", "data/*.desktop", "data/icons/*.svg"]
+tiptoi_gtk = [
+    "ui/*.ui",
+    "data/*.desktop",
+    "data/icons/*.svg",
+    "locale/*/LC_MESSAGES/*.mo",
+    "locale/*/LC_MESSAGES/*.po",
+]
