@@ -148,7 +148,7 @@ class PenViewMixin:
             )
 
         # Alte Datei-Zeilen entfernen
-        for row, _ in self._pen_file_rows:
+        for row, _old_path in self._pen_file_rows:
             self._pen_files_group.remove(row)
         self._pen_file_rows.clear()
 
