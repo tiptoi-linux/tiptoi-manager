@@ -52,7 +52,7 @@ Zum lokalen Testen per `flatpak-builder`:
 ```bash
 git clone https://github.com/tiptoi-linux/tiptoi-manager
 cd tiptoi-manager
-flatpak install flathub org.gnome.Platform//48 org.gnome.Sdk//48
+flatpak install flathub org.gnome.Platform//49 org.gnome.Sdk//49
 flatpak-builder --user --install --force-clean build-dir \
   packaging/io.github.tiptoi_linux.TiptoiManager.yaml
 flatpak run io.github.tiptoi_linux.TiptoiManager
